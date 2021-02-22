@@ -2,6 +2,7 @@ package parser
 
 import "fmt"
 
+// Parses a valid yaml workflow definition and returns the workflow.
 func ExampleParseYamlWorkflow() {
 
 	inputFile := "testdata/complete_workflow.yaml"
@@ -14,6 +15,7 @@ func ExampleParseYamlWorkflow() {
 	// &{ID:lulibrary.workflows.reloadAllUsers Name:Reload All Users}
 }
 
+// Parses a workflow where there is no file present at the filepath and returns error
 func ExampleParseYamlWorkflow_noFile() {
 
 	inputFile := "testdata/no_file.yaml"
@@ -28,6 +30,7 @@ func ExampleParseYamlWorkflow_noFile() {
 	// Invalid Yaml File: unable to open file testdata/no_file.yaml
 }
 
+// Parses a workflow where there is a non yaml file present at the filepath and returns error
 func ExampleParseYamlWorkflow_invalidFile() {
 
 	inputFile := "testdata/workflow.csv"

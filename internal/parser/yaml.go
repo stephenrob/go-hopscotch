@@ -7,12 +7,14 @@ import (
 	"io/ioutil"
 )
 
+// Returned when the parser fails to parse the file at the specified filepath
 type InvalidYamlFile struct {
 	err      error
 	filepath string
 	message  string
 }
 
+// Error implements the error interface and returns a formatted string representation of the error
 func (e *InvalidYamlFile) Error() string {
 	return fmt.Sprintf("Invalid Yaml File: %s", e.message)
 }
