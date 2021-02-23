@@ -5,8 +5,8 @@ name: 'Reload All Users'
 
 # What can trigger this workflow
 on:
-  schedule: '0/1 * * * * ' # Cron syntax
-  manual: true # Manual trigger
+  schedule: '0/1 * * * *' # Cron syntax
+  manual: false # Manual trigger
   workflow:
     - lulibrary.workflows.fullReload # Allow triggering by workflow
 
