@@ -1,0 +1,68 @@
+# Unique ID of the workflow - Referenced in Audit Logs
+id: 'lulibrary.workflows.reloadAllUsers'
+# Display name of the workflow
+name: 'Reload All Users'
+
+# What can trigger this workflow
+on:
+  schedule: '0/1 * * * *' # Cron syntax
+  manual: false # Manual trigger
+  workflow:
+    - lulibrary.workflows.fullReload # Allow triggering by workflow
+
+# Arguments available to all tasks in the workflow run
+# All arguments are initially defined as strings
+# Type coercion must be done in the task
+args:
+  a1: Argument1
+
+params:
+  - name: p1
+    type: string
+  - name: p2
+    type: boolean
+
+# Tasks that make up the workflow run
+tasks:
+  # Task id - unique to tasks in workflow
+  publish_initial_message:
+    # Display name of task
+    name: 'Publish get all users'
+    # Which task handler does this use
+    uses: 'Hopscotch/PublishMessage@v1'
+    # Config/Parameters to pass to the task handler
+    with:
+      # Message Type
+      type: 'userLoader.ldap.getAllUserCids'
+      # Message Version
+      version: '0.1.0'
+      # Data template to use (should this be a template the user defines in this yaml file?)
+      data_template: |
+        {
+          "hello": "{{.Args.a1}}"
+        }
+
+  get_all_users:
+    name: Get All Users
+    uses: 'Hopscotch/UseJob@v1'
+    with:
+      # Job to use in workflow
+      job: 'UserLoader::Jobs::GetAllUserCids'
+    # Arguments available only to this task
+    args:
+      hello: World
+
+  reload_all_users:
+    name: Reload All Users
+    uses: 'Hopscotch/UseJob@v1'
+    with:
+      # Job to use in workflow
+      job: 'UserLoader::Jobs::ReloadAllUserCids'
+
+# Notifications to send at different stages
+notifications:
+  # Success Notifications
+  onSuccess:
+    # Send success notification to user who triggered workflow
+    # Only used for manually ran workflows
+    user: true
